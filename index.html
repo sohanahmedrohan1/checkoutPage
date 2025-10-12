@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout - Organic Shop</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="checkout-container">
+  <h1 class="page-title">🛒 Checkout Page</h1>
+  <p class="subtitle">অর্ডার করতে সঠিক তথ্য দিয়ে নিচের ফরম পূরণ করে <b>"অর্ডার করুন"</b> বাটনে ক্লিক করুন।</p>
+
+  <div class="login-box">
+    পুরাতন কাস্টমার? <button class="btn ghost">Login</button>
+  </div>
+
+  <div class="checkout-grid">
+    <!-- Billing Section -->
+    <div class="billing-section card">
+      <h2>বিলিং ডিটেইলস</h2>
+      <form id="checkoutForm">
+        <label>আপনার নাম *</label>
+        <input type="text" id="name" placeholder="সম্পূর্ণ নামটি লিখুন" required>
+
+        <label>আপনার মোবাইল নাম্বার *</label>
+        <input type="tel" id="phone" placeholder="১১ ডিজিটের মোবাইল নাম্বারটি লিখুন" pattern="[0-9]{11}" required>
+
+        <label>সম্পূর্ণ ঠিকানা *</label>
+        <textarea id="address" placeholder="রোড নাম/নাম্বার, বাড়ি নাম/নাম্বার, ফ্লাট নাম্বার" required></textarea>
+
+        <div class="select-grid">
+          <div>
+            <label>জেলা *</label>
+            <select id="district" required>
+              <option value="">জেলা সিলেক্ট করুন</option>
+              <option>ঢাকা</option>
+              <option>চট্টগ্রাম</option>
+              <option>রাজশাহী</option>
+              <option>খুলনা</option>
+            </select>
+          </div>
+          <div>
+            <label>উপজেলা *</label>
+            <select id="upazila" required>
+              <option value="">উপজেলা সিলেক্ট করুন</option>
+            </select>
+          </div>
+        </div>
+
+        <label>পেমেন্ট মেথড</label>
+        <div class="payment-method">
+          <input type="radio" id="cod" name="payment" value="COD" checked>
+          <label for="cod">💵 Cash On Delivery</label>
+        </div>
+
+        <div class="subtotal-line">
+          Subtotal: <b id="subtotal">৳0</b>
+        </div>
+
+        <button type="submit" class="btn primary full">অর্ডার নিশ্চিত করুন</button>
+      </form>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="order-summary card">
+      <h2>🛍️ প্রোডাক্ট ডিটেইলস</h2>
+      <div id="cartItems"></div>
+
+      <!-- Coupon Toggle -->
+      <div class="toggle-box">
+        <div class="toggle-header" onclick="toggleBox('couponBox')">🎁 Apply Coupon</div>
+        <div class="toggle-content" id="couponBox">
+          <div class="coupon">
+            <input type="text" id="coupon" placeholder="কুপন কোড লিখুন" />
+            <button id="applyCoupon" class="btn ghost small">এপ্লাই</button>
+          </div>
+          <div class="coupon-detail"></div>
+        </div>
+      </div>
+
+      <!-- Order Note Toggle -->
+      <div class="toggle-box">
+        <div class="toggle-header" onclick="toggleBox('orderNoteBox')">📝 Order Note</div>
+        <div class="toggle-content" id="orderNoteBox">
+          <textarea id="orderNote" placeholder="আপনার বিশেষ নির্দেশনা লিখুন..."></textarea>
+        </div>
+      </div>
+
+      <!-- Summary Lines -->
+      <div class="summary-line" id="sumSubtotalLine">
+        <div>Subtotal</div>
+        <div id="sumSubtotal">৳0</div>
+      </div>
+
+      <div class="summary-line" id="deliveryLine">
+        <div>Delivery Charge</div>
+        <div>৳0</div>
+      </div>
+
+      <div class="summary-line" id="couponLine">
+        <div>Coupon Discount</div>
+        <div>-৳0</div>
+      </div>
+
+      <div class="summary-line total">
+        <div>সর্বমোট</div>
+        <div id="grandTotal">৳0</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

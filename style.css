@@ -1,0 +1,343 @@
+/* Google Fonts: Hind Siliguri */
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&display=swap');
+
+:root {
+  --bg: #f8fff9;
+  --card: #fff;
+  --accent: #10b981;
+  --accent2: #059669;
+  --muted: #6b7280;
+  --radius: 12px;
+  font-family: 'Hind Siliguri', sans-serif;
+}
+
+body {
+  background: var(--bg);
+  margin: 0;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  color: #111827;
+}
+
+.checkout-container {
+  max-width: 1080px;
+  width: 100%;
+}
+
+.page-title {
+  text-align: center;
+  margin: 0;
+  font-size: 28px;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.login-box {
+  text-align: right;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 20px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+h2 {
+  margin-top: 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  padding-bottom: 8px;
+}
+
+label {
+  display: block;
+  font-weight: 500;
+  margin: 10px 0 4px;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  outline: none;
+}
+/* সব ইনপুট ও টেক্সট এরিয়া placeholder একই ফন্টে */
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+    font-family: 'Hind Siliguri', sans-serif; /* মূল ফন্ট */
+    font-weight: 400; /* চাইলে 500 বা 600 করতে পারো */
+    color: #9ca3af; /* হালকা grey */
+    opacity: 1; /* Firefox এর জন্য */
+}
+select {
+    font-family: 'Hind Siliguri', sans-serif; /* পুরো dropdown এ ফন্ট লাগবে */
+    font-size: 14px;
+    color: #111827;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    background-color: #fff;
+    appearance: none; /* arrow styling remove করার জন্য */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px #dcfce7;
+}
+
+.select-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.payment-method {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f9fffa;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.04);
+  margin-top: 8px;
+}
+
+.subtotal-line {
+  margin-top: 14px;
+  font-size: 15px;
+  color: var(--accent2);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn.primary {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: #fff;
+}
+
+.btn.primary:hover {
+  transform: scale(1.02);
+}
+
+.btn.ghost {
+  border: 1px solid rgba(0,0,0,0.1);
+  background: #fff;
+  color: #111;
+}
+
+.btn.small {
+  font-size: 13px;
+  padding: 6px 10px;
+}
+
+.btn.full {
+  width: 100%;
+  margin-top: 10px;
+}
+
+#cartItems .item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px dashed rgba(0,0,0,0.05);
+  padding: 10px 0;
+  transition: all 0.3s ease;
+}
+
+.thumb {
+  width: 54px;
+  height: 54px;
+  background: #f1fff2;
+  border-radius: 6px;
+}
+
+.item-info {
+  flex: 1;
+  font-size: 14px;
+}
+
+.qty-control {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.qty-btn {
+  background: #f0fdf4;
+  border: 1px solid #a7f3d0;
+  padding: 2px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.qty {
+  width: 30px;
+  text-align: center;
+  border: none;
+  background: transparent;
+}
+
+.remove {
+  cursor: pointer;
+  color: crimson;
+  font-size: 16px;
+  margin-left: 6px;
+  font-weight: bold;
+}
+
+.price {
+  font-weight: 600;
+}
+
+.order-summary .summary-line {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+}
+
+.order-summary .total {
+  font-weight: 700;
+  font-size: 18px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  padding-top: 6px;
+}
+
+.coupon {
+  display: flex;
+  gap: 6px;
+  margin: 10px 0;
+}
+
+.coupon input {
+  flex: 1;
+}
+
+.coupon-detail {
+  background: #ecfdf5;
+  color: #065f46;
+  font-size: 14px;
+  padding: 8px;
+  border-radius: 6px;
+  display: none;
+}
+/* Coupon input placeholder */
+.coupon input::placeholder {
+    font-family: 'Hind Siliguri', sans-serif;
+    font-weight: 400;
+    color: #9ca3af;
+    opacity: 1;
+}
+
+/* Coupon button (এপ্লাই) */
+.coupon button {
+    font-family: 'Hind Siliguri', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid var(--accent2);
+    background: var(--accent);
+    color: #fff;
+    padding: 8px 12px;
+    transition: 0.2s;
+}
+
+.coupon button:hover {
+    background: var(--accent2);
+    transform: scale(1.02);
+}
+
+.toggle-box {
+  margin-top: 12px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.05);
+  background: #f9fff9;
+}
+
+.toggle-header {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--accent2);
+  display: flex;
+  justify-content: space-between;
+}
+
+.toggle-header::after {
+  content: "▼";
+  transition: transform 0.3s ease;
+}
+
+.toggle-box.active .toggle-header::after {
+  transform: rotate(-180deg);
+}
+
+.toggle-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+  padding: 0 14px;
+}
+
+.toggle-box.active .toggle-content {
+  max-height: 250px;
+  padding: 10px 14px;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+textarea::-webkit-scrollbar {
+  width: 6px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 3px;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+@media (max-width:880px) {
+  .checkout-grid {
+    grid-template-columns: 1fr;
+  }
+  .select-grid {
+    grid-template-columns: 1fr;
+  }
+}
