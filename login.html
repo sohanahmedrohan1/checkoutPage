@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Login / Registration</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&display=swap');
+
+body {
+  font-family: 'Hind Siliguri', sans-serif;
+  background: #f8fff9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+}
+
+.auth-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  transition: 0.3s;
+}
+
+.auth-card h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.auth-card p {
+  margin-bottom: 12px;
+  color: #374151;
+  text-align: center;
+}
+
+.auth-methods {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.auth-methods label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 15px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.auth-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-section input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+}
+
+.auth-section input::placeholder {
+  font-family: 'Hind Siliguri', sans-serif;
+}
+
+.btn {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.btn.primary {
+  background: #10b981;
+  color: #fff;
+}
+.btn.primary:hover { background: #059669; }
+
+.btn.secondary {
+  background: #f97316;
+  color: #fff;
+}
+.btn.secondary:hover { background: #ea580c; }
+
+.switch-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+.switch-link a {
+  color: #10b981;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+#otpTimer {
+  color: #ef4444;
+  font-weight: 500;
+}
+
+@media (max-width:480px){
+  .auth-card{ padding:18px; }
+  .auth-methods label{ display:block; margin-bottom:8px; }
+}
+</style>
+</head>
+<body>
+
+<div class="auth-card" id="authCard">
+
+  <!-- ========== LOGIN SECTION ========== -->
+  <div id="loginSection">
+    <h2>Customer Login</h2>
+    <p>Choose Login Method:</p>
+    <div class="auth-methods">
+      <label><input type="radio" name="loginMethod" value="otp" checked> OTP Login</label>
+      <label><input type="radio" name="loginMethod" value="password"> Password Login</label>
+    </div>
+
+    <form id="loginForm">
+      <!-- OTP Login -->
+      <div class="auth-section" id="otpSection">
+        <input type="text" placeholder="মোবাইল নাম্বার লিখুন">
+        <button type="button" class="btn primary" id="sendOtpBtn">Send OTP</button>
+        <div id="otpInputSection" style="display:none; flex-direction:column; gap:10px;">
+          <input type="text" placeholder="OTP লিখুন">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <button type="button" class="btn primary" id="verifyOtpBtn">Verify OTP</button>
+            <span id="otpTimer">01:00</span>
+            <button type="button" class="btn secondary" id="resendOtpBtn" style="display:none;">Resend</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Password Login -->
+      <div class="auth-section" id="passwordSection" style="display:none;">
+        <input type="text" placeholder="মোবাইল নাম্বার">
+        <input type="password" placeholder="পাসওয়ার্ড">
+        <button type="submit" class="btn primary">Login</button>
+      </div>
+    </form>
+
+    <div class="switch-link">
+      <span>একাউন্ট নেই? <a href="#" id="goRegister">রেজিস্টার করুন</a></span>
+    </div>
+  </div>
+
+  <!-- ========== REGISTRATION SECTION ========== -->
+  <div id="registerSection" style="display:none;">
+    <h2>Customer Registration</h2>
+    <form id="registerForm" class="auth-section">
+      <input type="text" placeholder="পূর্ণ নাম লিখুন">
+      <input type="text" placeholder="মোবাইল নাম্বার লিখুন">
+      <input type="email" placeholder="ইমেইল (optional)">
+      <input type="password" placeholder="পাসওয়ার্ড তৈরি করুন">
+      <button type="submit" class="btn primary">রেজিস্টার করুন</button>
+    </form>
+
+    <div class="switch-link">
+      <span>আগেই একাউন্ট আছে? <a href="#" id="goLogin">লগইন করুন</a></span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const otpRadio = document.querySelector('input[value="otp"]');
+const passwordRadio = document.querySelector('input[value="password"]');
+const otpSection = document.getElementById('otpSection');
+const passwordSection = document.getElementById('passwordSection');
+const sendOtpBtn = document.getElementById('sendOtpBtn');
+const otpInputSection = document.getElementById('otpInputSection');
+const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+const otpTimerSpan = document.getElementById('otpTimer');
+const resendOtpBtn = document.getElementById('resendOtpBtn');
+
+const loginSection = document.getElementById('loginSection');
+const registerSection = document.getElementById('registerSection');
+const goRegister = document.getElementById('goRegister');
+const goLogin = document.getElementById('goLogin');
+
+let otpTimerInterval;
+
+// Toggle OTP / Password
+otpRadio.addEventListener('change', () => {
+  otpSection.style.display = 'flex';
+  passwordSection.style.display = 'none';
+});
+passwordRadio.addEventListener('change', () => {
+  otpSection.style.display = 'none';
+  passwordSection.style.display = 'flex';
+});
+
+// OTP Logic
+function startOtpProcess(){
+  otpInputSection.style.display = 'flex';
+  sendOtpBtn.disabled = true;
+  resendOtpBtn.style.display = 'none';
+  alert("OTP পাঠানো হয়েছে!");
+
+  let timeLeft = 60; // seconds
+  otpTimerSpan.textContent = formatTime(timeLeft);
+
+  clearInterval(otpTimerInterval);
+  otpTimerInterval = setInterval(() => {
+    timeLeft--;
+    otpTimerSpan.textContent = formatTime(timeLeft);
+    if(timeLeft <= 0){
+      clearInterval(otpTimerInterval);
+      alert("OTP শেষ হয়ে গেছে। আবার পাঠান।");
+      sendOtpBtn.disabled = false;
+      resendOtpBtn.style.display = 'inline-block';
+    }
+  }, 1000);
+}
+sendOtpBtn.addEventListener('click', startOtpProcess);
+resendOtpBtn.addEventListener('click', startOtpProcess);
+
+verifyOtpBtn.addEventListener('click', () => {
+  clearInterval(otpTimerInterval);
+  alert("OTP Verified! Login Successful.");
+});
+
+function formatTime(seconds){
+  let min = Math.floor(seconds/60);
+  let sec = seconds % 60;
+  return `${min.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}`;
+}
+
+// Switch Login/Register
+goRegister.addEventListener('click', e=>{
+  e.preventDefault();
+  loginSection.style.display='none';
+  registerSection.style.display='block';
+});
+goLogin.addEventListener('click', e=>{
+  e.preventDefault();
+  registerSection.style.display='none';
+  loginSection.style.display='block';
+});
+</script>
+
+</body>
+</html>
