@@ -1,118 +1,1677 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Checkout - Organic Shop</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অর্ডার সম্পন্ন করুন</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+        
+        :root {
+            --primary: #00C853;
+            --primary-light: #E8F5E9;
+            --secondary: #000000;
+            --accent: #64DD17;
+            --light: #ffffff;
+            --dark: #121212;
+            --gray: #757575;
+            --border: #E0E0E0;
+            --card-bg: #ffffff;
+            --text-light: #424242;
+            --text-gray: #9E9E9E;
+            --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            --error: #f44336;
+            --success: #4caf50;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: var(--text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .checkout-header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: var(--light);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .checkout-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+        
+        .checkout-header h1 {
+            color: var(--secondary);
+            font-weight: 700;
+            margin-bottom: 12px;
+            font-size: 2rem;
+        }
+        
+        .checkout-header p {
+            color: var(--gray);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .auth-prompt {
+            display: inline-flex;
+            align-items: center;
+            background: var(--primary-light);
+            padding: 12px 24px;
+            border-radius: 50px;
+            margin-top: 15px;
+            border: 1px solid rgba(0, 200, 83, 0.2);
+            gap: 10px;
+        }
+        
+        .auth-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 200, 83, 0.3);
+        }
+        
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 200, 83, 0.4);
+        }
+
+        .auth-btn.secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .checkout-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .billing-section, .order-summary {
+            background: var(--light);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        
+        .billing-section {
+            flex: 2;
+        }
+        
+        .order-summary {
+            flex: 1;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--secondary);
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary-light);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 12px;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 8px;
+            border-radius: 8px;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: var(--light);
+            color: var(--text-light);
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.1);
+            outline: none;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .payment-method {
+            margin: 30px 0;
+        }
+        
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--light);
+        }
+        
+        .payment-option:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+        
+        .payment-option input {
+            margin-right: 12px;
+            accent-color: var(--primary);
+        }
+        
+        .order-now-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 700;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 200, 83, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .order-now-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 200, 83, 0.4);
+        }
+        
+        .blinking {
+            animation: blink 1.5s infinite;
+        }
+        
+        @keyframes blink {
+            0% { transform: scale(1); box-shadow: 0 4px 12px rgba(0, 200, 83, 0.3); }
+            50% { transform: scale(1.02); box-shadow: 0 6px 20px rgba(0, 200, 83, 0.5); }
+            100% { transform: scale(1); box-shadow: 0 4px 12px rgba(0, 200, 83, 0.3); }
+        }
+        
+        .product-details {
+            margin-bottom: 24px;
+        }
+        
+        .product-item {
+            display: flex;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+            position: relative;
+        }
+        
+        .product-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-right: 16px;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.4rem;
+            border: 1px solid var(--border);
+        }
+        
+        .product-info {
+            flex: 1;
+        }
+        
+        .product-name {
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--secondary);
+        }
+        
+        .product-price {
+            color: var(--primary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: var(--gray);
+            font-size: 0.9rem;
+            font-weight: normal;
+        }
+        
+        .discount-badge {
+            background: var(--error);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+            gap: 8px;
+        }
+        
+        .quantity-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .quantity-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .remove-btn {
+            background: var(--error);
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+            margin-left: 8px;
+        }
+
+        .remove-btn:hover {
+            background: #d32f2f;
+        }
+        
+        .quantity {
+            margin: 0 8px;
+            font-weight: 500;
+            color: var(--secondary);
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        .expandable-section {
+            margin: 20px 0;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            background: var(--light);
+        }
+        
+        .expandable-header {
+            padding: 16px 20px;
+            background: var(--primary-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .expandable-header:hover {
+            background: #e1f5e1;
+        }
+        
+        .expandable-content {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .expandable-content.active {
+            padding: 20px;
+            max-height: 300px;
+        }
+        
+        .coupon-input {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .coupon-input input {
+            flex: 1;
+        }
+        
+        .apply-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .apply-btn:hover {
+            background: var(--accent);
+        }
+
+        .apply-btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+        }
+        
+        .order-notes textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 100px;
+            background: var(--light);
+            color: var(--text-light);
+        }
+        
+        .total-section {
+            margin-top: 24px;
+            border-top: 2px solid var(--border);
+            padding-top: 20px;
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+        
+        .discount-details {
+            font-size: 0.8rem;
+            color: var(--success);
+            margin-left: 8px;
+            font-weight: normal;
+        }
+        
+        .final-total {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 2px dashed var(--border);
+        }
+        
+        .icon-arrow {
+            transition: transform 0.3s;
+            color: var(--primary);
+        }
+        
+        .rotate {
+            transform: rotate(180deg);
+        }
+        
+        .price-update {
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-left: 5px;
+        }
+        
+        .success-message {
+            background: var(--primary-light);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        .error-message {
+            background: #FFEBEE;
+            border: 1px solid var(--error);
+            color: #C62828;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+
+        .empty-cart i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            color: var(--border);
+        }
+
+        .empty-cart p {
+            margin-bottom: 20px;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: white;
+        }
+        
+        .modal-body {
+            padding: 25px;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .auth-tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .otp-inputs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.2rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+        
+        .resend-otp {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .resend-otp a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .resend-otp a:disabled {
+            color: var(--gray);
+            cursor: not-allowed;
+        }
+        
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background: var(--accent);
+        }
+
+        .submit-btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+        }
+
+        .timer {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .checkout-content {
+                flex-direction: column;
+            }
+            
+            .billing-section, .order-summary {
+                width: 100%;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .checkout-header {
+                padding: 24px 20px;
+            }
+            
+            .checkout-header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .product-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .product-image {
+                margin-bottom: 12px;
+            }
+            
+            .quantity-controls {
+                align-self: flex-end;
+                margin-top: 12px;
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .auth-prompt {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 15px 10px;
+            }
+            
+            .checkout-header, .billing-section, .order-summary {
+                padding: 20px 16px;
+            }
+            
+            .section-title {
+                font-size: 1.2rem;
+            }
+            
+            .coupon-input {
+                flex-direction: column;
+            }
+            
+            .apply-btn {
+                padding: 12px;
+            }
+            
+            .otp-inputs {
+                justify-content: center;
+            }
+            
+            .otp-input {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="checkout-container">
-  <h1 class="page-title">🛒 Checkout Page</h1>
-  <p class="subtitle">অর্ডার করতে সঠিক তথ্য দিয়ে নিচের ফরম পূরণ করে <b>"অর্ডার করুন"</b> বাটনে ক্লিক করুন।</p>
-
-<div class="login-box">
-  পুরাতন কাস্টমার?
-  <button class="btn ghost" onclick="window.location.href='login.html'">Login</button>
-</div>
-
-  <div class="checkout-grid">
-    <!-- Billing Section -->
-    <div class="billing-section card">
-      <h2>বিলিং ডিটেইলস</h2>
-      <form id="checkoutForm">
-        <label>আপনার নাম *</label>
-        <input type="text" id="name" placeholder="সম্পূর্ণ নামটি লিখুন" required>
-
-        <label>আপনার মোবাইল নাম্বার *</label>
-        <input type="tel" id="phone" placeholder="১১ ডিজিটের মোবাইল নাম্বারটি লিখুন" pattern="[0-9]{11}" required>
-
-        <label>সম্পূর্ণ ঠিকানা *</label>
-        <textarea id="address" placeholder="রোড নাম/নাম্বার, বাড়ি নাম/নাম্বার, ফ্লাট নাম্বার" required></textarea>
-
-        <div class="select-grid">
-          <div>
-            <label>জেলা *</label>
-            <select id="district" required>
-              <option value="">জেলা সিলেক্ট করুন</option>
-              <option>ঢাকা</option>
-              <option>চট্টগ্রাম</option>
-              <option>রাজশাহী</option>
-              <option>খুলনা</option>
-            </select>
-          </div>
-          <div>
-            <label>উপজেলা *</label>
-            <select id="upazila" required>
-              <option value="">উপজেলা সিলেক্ট করুন</option>
-            </select>
-          </div>
+    <div class="container">
+        <div class="checkout-header">
+            <h1>অর্ডার সম্পন্ন করুন</h1>
+            <p>সঠিক তথ্য দিয়ে নিচের ফরমটি পূরন করুন এবং "অর্ডার করুন" বাটনে ক্লিক করুন</p>
+            <div class="auth-prompt">
+                <span>ইতিমধ্যে অ্যাকাউন্ট আছে?</span>
+                <button class="auth-btn" id="openLoginModal">লগইন</button>
+                <span>নতুন ইউজার?</span>
+                <button class="auth-btn secondary" id="openRegisterModal">রেজিস্ট্রেশন</button>
+            </div>
         </div>
+        
+        <div class="checkout-content">
+            <div class="billing-section">
+                <h2 class="section-title"><i class="fas fa-user"></i> বিলিং তথ্য</h2>
+                
+                <div class="form-group">
+                    <label for="name">আপনার সম্পূর্ণ নাম *</label>
+                    <input type="text" id="name" class="form-control" placeholder="আপনার পুরো নাম লিখুন">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">মোবাইল নম্বর *</label>
+                    <input type="tel" id="phone" class="form-control" placeholder="১১ ডিজিটের মোবাইল নম্বর">
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">সম্পূর্ণ ঠিকানা *</label>
+                    <input type="text" id="address" class="form-control" placeholder="বাড়ি নম্বর, রোড নাম, এলাকা">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="district">জেলা *</label>
+                        <select id="district" class="form-control">
+                            <option value="">জেলা নির্বাচন করুন</option>
+                            <option value="dhaka">ঢাকা</option>
+                            <option value="chattogram">চট্টগ্রাম</option>
+                            <option value="khulna">খুলনা</option>
+                            <option value="rajshahi">রাজশাহী</option>
+                            <option value="sylhet">সিলেট</option>
+                            <option value="barishal">বরিশাল</option>
+                            <option value="rangpur">রংপুর</option>
+                            <option value="mymensingh">ময়মনসিংহ</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="upazila">উপজেলা *</label>
+                        <select id="upazila" class="form-control">
+                            <option value="">উপজেলা নির্বাচন করুন</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="payment-method">
+                    <h3 class="section-title"><i class="fas fa-credit-card"></i> পেমেন্ট মাধ্যম</h3>
+                    <div class="payment-option">
+                        <input type="radio" id="cod" name="payment" checked>
+                        <label for="cod">ক্যাশ অন ডেলিভারি</label>
+                    </div>
+                </div>
+                
+                <button class="order-now-btn blinking" id="orderConfirmBtn">
+                    <i class="fas fa-shopping-bag"></i> অর্ডার নিশ্চিত করুন - <span id="totalAmount">৳ ১,১৫০</span>
+                </button>
+            </div>
+            
+            <div class="order-summary">
+                <h2 class="section-title"><i class="fas fa-shopping-cart"></i> অর্ডার সামারি</h2>
+                
+                <div class="product-details" id="productDetails">
+                    <!-- Products will be dynamically added here -->
+                </div>
 
-        <label>পেমেন্ট মেথড</label>
-        <div class="payment-method">
-          <input type="radio" id="cod" name="payment" value="COD" checked>
-          <label for="cod">💵 Cash On Delivery</label>
+                <div id="emptyCartMessage" class="empty-cart" style="display: none;">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>আপনার কার্ট খালি</h3>
+                    <p>কিছু প্রোডাক্ট যোগ করুন অর্ডার দিতে</p>
+                    <button class="auth-btn" onclick="addSampleProducts()">স্যাম্পল প্রোডাক্ট যোগ করুন</button>
+                </div>
+                
+                <div class="expandable-section">
+                    <div class="expandable-header" id="coupon-header">
+                        <span><i class="fas fa-tag"></i> কুপন কোড</span>
+                        <i class="fas fa-chevron-down icon-arrow"></i>
+                    </div>
+                    <div class="expandable-content" id="coupon-content">
+                        <div class="coupon-input">
+                            <input type="text" id="coupon" class="form-control" placeholder="কুপন কোড লিখুন">
+                            <button class="apply-btn" id="applyCoupon">প্রয়োগ করুন</button>
+                        </div>
+                        <div id="couponMessage" class="success-message"></div>
+                    </div>
+                </div>
+                
+                <div class="expandable-section">
+                    <div class="expandable-header" id="notes-header">
+                        <span><i class="fas fa-sticky-note"></i> বিশেষ নির্দেশনা</span>
+                        <i class="fas fa-chevron-down icon-arrow"></i>
+                    </div>
+                    <div class="expandable-content" id="notes-content">
+                        <div class="order-notes">
+                            <textarea id="notes" placeholder="আপনার অর্ডার সম্পর্কিত বিশেষ নির্দেশনা থাকলে এখানে লিখুন..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="total-section">
+                    <div class="total-row">
+                        <span>সাবটোটাল:</span>
+                        <span>৳ <span id="subtotal">১,৬০০</span></span>
+                    </div>
+                    <div class="total-row">
+                        <span>পণ্য ডিসকাউন্ট: <span class="discount-details" id="productDiscountDetails">(৳ ৫০০ ছাড়)</span></span>
+                        <span>-৳ <span id="productDiscount">৫০০</span></span>
+                    </div>
+                    <div class="total-row">
+                        <span>ডেলিভারি চার্জ:</span>
+                        <span>৳ <span id="delivery">৫০</span></span>
+                    </div>
+                    <div class="total-row">
+                        <span>কুপন ডিসকাউন্ট: <span class="discount-details" id="couponDiscountDetails"></span></span>
+                        <span>-৳ <span id="couponDiscount">০</span></span>
+                    </div>
+                    <div class="total-row final-total">
+                        <span>মোট মূল্য:</span>
+                        <span>৳ <span id="finalTotal">১,১৫০</span></span>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="subtotal-line">
-          Subtotal: <b id="subtotal">৳0</b>
-        </div>
-
-        <button type="submit" class="btn primary full">অর্ডার নিশ্চিত করুন</button>
-      </form>
     </div>
 
-    <!-- Order Summary -->
-    <div class="order-summary card">
-      <h2>🛍️ প্রোডাক্ট ডিটেইলস</h2>
-      <div id="cartItems"></div>
-
-      <!-- Coupon Toggle -->
-      <div class="toggle-box">
-        <div class="toggle-header" onclick="toggleBox('couponBox')">🎁 Apply Coupon</div>
-        <div class="toggle-content" id="couponBox">
-          <div class="coupon">
-            <input type="text" id="coupon" placeholder="কুপন কোড লিখুন" />
-            <button id="applyCoupon" class="btn ghost small">এপ্লাই</button>
-          </div>
-          <div class="coupon-detail"></div>
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>লগইন করুন</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="auth-tabs">
+                    <div class="auth-tab active" data-tab="otp">OTP লগইন</div>
+                    <div class="auth-tab" data-tab="password">পাসওয়ার্ড লগইন</div>
+                </div>
+                
+                <div class="auth-form active" id="otpLoginForm">
+                    <div class="form-group">
+                        <label for="loginPhone">মোবাইল নম্বর</label>
+                        <input type="tel" id="loginPhone" class="form-control" placeholder="আপনার মোবাইল নম্বর লিখুন">
+                    </div>
+                    <button class="submit-btn" id="sendOtpBtn">OTP পাঠান</button>
+                    
+                    <div class="form-group" id="otpInputGroup" style="display: none;">
+                        <label for="otp">OTP কোড</label>
+                        <div class="otp-inputs">
+                            <input type="text" class="otp-input" maxlength="1">
+                            <input type="text" class="otp-input" maxlength="1">
+                            <input type="text" class="otp-input" maxlength="1">
+                            <input type="text" class="otp-input" maxlength="1">
+                            <input type="text" class="otp-input" maxlength="1">
+                            <input type="text" class="otp-input" maxlength="1">
+                        </div>
+                        <div class="resend-otp">
+                            OTP পাননি? <a href="#" id="resendOtp">আবার পাঠান (<span class="timer" id="otpTimer">০০:০০</span>)</a>
+                        </div>
+                    </div>
+                    <button class="submit-btn" id="verifyOtpBtn" style="display: none;">যাচাই করুন</button>
+                    
+                    <div class="form-footer">
+                        অ্যাকাউন্ট নেই? <a href="#" id="goToRegisterFromLogin">রেজিস্ট্রেশন করুন</a>
+                    </div>
+                </div>
+                
+                <div class="auth-form" id="passwordLoginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">ইমেইল বা মোবাইল নম্বর</label>
+                        <input type="text" id="loginEmail" class="form-control" placeholder="আপনার ইমেইল বা মোবাইল নম্বর">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">পাসওয়ার্ড</label>
+                        <input type="password" id="loginPassword" class="form-control" placeholder="আপনার পাসওয়ার্ড">
+                    </div>
+                    <button class="submit-btn" id="loginWithPasswordBtn">লগইন করুন</button>
+                    <div class="resend-otp">
+                        পাসওয়ার্ড ভুলে গেছেন? <a href="#">পাসওয়ার্ড রিসেট করুন</a>
+                    </div>
+                    
+                    <div class="form-footer">
+                        অ্যাকাউন্ট নেই? <a href="#" id="goToRegisterFromPassword">রেজিস্ট্রেশন করুন</a>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-
-      <!-- Order Note Toggle -->
-      <div class="toggle-box">
-        <div class="toggle-header" onclick="toggleBox('orderNoteBox')">📝 Order Note</div>
-        <div class="toggle-content" id="orderNoteBox">
-          <textarea id="orderNote" placeholder="আপনার বিশেষ নির্দেশনা লিখুন..."></textarea>
-        </div>
-      </div>
-
-      <!-- Summary Lines -->
-      <div class="summary-line" id="sumSubtotalLine">
-        <div>Subtotal</div>
-        <div id="sumSubtotal">৳0</div>
-      </div>
-
-      <div class="summary-line" id="deliveryLine">
-        <div>Delivery Charge</div>
-        <div>৳0</div>
-      </div>
-
-      <div class="summary-line" id="couponLine">
-        <div>Coupon Discount</div>
-        <div>-৳0</div>
-      </div>
-
-      <div class="summary-line total">
-        <div>সর্বমোট</div>
-        <div id="grandTotal">৳0</div>
-      </div>
-
     </div>
-  </div>
-</div>
 
-<script src="script.js"></script>
+    <!-- Registration Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>রেজিস্ট্রেশন করুন</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="auth-form active" id="passwordRegisterForm">
+                    <div class="form-group">
+                        <label for="regNamePassword">আপনার নাম *</label>
+                        <input type="text" id="regNamePassword" class="form-control" placeholder="আপনার পুরো নাম লিখুন">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPhonePassword">মোবাইল নম্বর *</label>
+                        <input type="tel" id="regPhonePassword" class="form-control" placeholder="১১ ডিজিটের মোবাইল নম্বর">
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmailPassword">ইমেইল *</label>
+                        <input type="email" id="regEmailPassword" class="form-control" placeholder="আপনার ইমেইল ঠিকানা">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">পাসওয়ার্ড *</label>
+                        <input type="password" id="regPassword" class="form-control" placeholder="পাসওয়ার্ড লিখুন (ন্যূনতম ৬ অক্ষর)">
+                    </div>
+                    <div class="form-group">
+                        <label for="regConfirmPassword">পাসওয়ার্ড নিশ্চিত করুন *</label>
+                        <input type="password" id="regConfirmPassword" class="form-control" placeholder="পাসওয়ার্ড আবার লিখুন">
+                    </div>
+                    <button class="submit-btn" id="registerWithPasswordBtn">নিবন্ধন করুন</button>
+                    
+                    <div class="form-footer">
+                        ইতিমধ্যে অ্যাকাউন্ট আছে? <a href="#" id="goToLoginFromRegPassword">লগইন করুন</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // প্রোডাক্ট ডেটা
+        let products = {
+            1: { name: "কটন টি-শার্ট", price: 500, originalPrice: 600, quantity: 1, icon: "fa-tshirt" },
+            2: { name: "মোবাইল কভার", price: 800, originalPrice: 1000, quantity: 1, icon: "fa-mobile-alt" },
+            3: { name: "বাংলা বই", price: 300, originalPrice: 400, quantity: 1, icon: "fa-book" }
+        };
+        
+        // কুপন ডেটা
+        const coupons = {
+            "WELCOME10": 10,
+            "SAVE20": 20,
+            "GREEN25": 25
+        };
+        
+        let appliedCoupon = null;
+        let discountAmount = 0;
+        let productDiscount = 0;
+        
+        // OTP টাইমার ভেরিয়েবল
+        let otpTimer;
+        let otpTimeLeft = 0;
+
+        // DOM লোড হওয়ার পর ইনিশিয়ালাইজেশন
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProducts();
+            updateTotal();
+            initializeEventListeners();
+            calculateProductDiscount();
+        });
+        
+        // প্রোডাক্ট রেন্ডার ফাংশন
+        function renderProducts() {
+            const productDetails = document.getElementById('productDetails');
+            const emptyCartMessage = document.getElementById('emptyCartMessage');
+            
+            if (Object.keys(products).length === 0) {
+                productDetails.style.display = 'none';
+                emptyCartMessage.style.display = 'block';
+                return;
+            }
+            
+            productDetails.style.display = 'block';
+            emptyCartMessage.style.display = 'none';
+            
+            productDetails.innerHTML = '';
+            
+            for (const productId in products) {
+                const product = products[productId];
+                const productElement = document.createElement('div');
+                productElement.className = 'product-item';
+                productElement.innerHTML = `
+                    <div class="product-image">
+                        <i class="fas ${product.icon}"></i>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-price">
+                            <span class="original-price">৳ ${product.originalPrice.toLocaleString('bn-BD')}</span>
+                            ৳ ${product.price.toLocaleString('bn-BD')} 
+                            <span class="discount-badge">${Math.round((1 - product.price/product.originalPrice) * 100)}% ছাড়</span>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn minus" data-product="${productId}"><i class="fas fa-minus"></i></button>
+                            <span class="quantity" id="quantity${productId}">${product.quantity}</span>
+                            <button class="quantity-btn plus" data-product="${productId}"><i class="fas fa-plus"></i></button>
+                            <button class="remove-btn" data-product="${productId}"><i class="fas fa-trash"></i> রিমুভ</button>
+                        </div>
+                    </div>
+                `;
+                productDetails.appendChild(productElement);
+            }
+            
+            // ইভেন্ট লিসেনার পুনরায় সংযুক্ত করুন
+            document.querySelectorAll('.plus').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = this.getAttribute('data-product');
+                    increaseQuantity(productId);
+                });
+            });
+            
+            document.querySelectorAll('.minus').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = this.getAttribute('data-product');
+                    decreaseQuantity(productId);
+                });
+            });
+            
+            document.querySelectorAll('.remove-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = this.getAttribute('data-product');
+                    removeProduct(productId);
+                });
+            });
+        }
+        
+        // প্রোডাক্ট রিমুভ ফাংশন
+        function removeProduct(productId) {
+            if (confirm('আপনি কি এই প্রোডাক্টটি কার্ট থেকে রিমুভ করতে চান?')) {
+                delete products[productId];
+                renderProducts();
+                updateTotal();
+                calculateProductDiscount();
+            }
+        }
+        
+        // স্যাম্পল প্রোডাক্ট যোগ করার ফাংশন
+        function addSampleProducts() {
+            products = {
+                1: { name: "কটন টি-শার্ট", price: 500, originalPrice: 600, quantity: 1, icon: "fa-tshirt" },
+                2: { name: "মোবাইল কভার", price: 800, originalPrice: 1000, quantity: 1, icon: "fa-mobile-alt" },
+                3: { name: "বাংলা বই", price: 300, originalPrice: 400, quantity: 1, icon: "fa-book" }
+            };
+            renderProducts();
+            updateTotal();
+            calculateProductDiscount();
+        }
+        
+        // ইভেন্ট লিসেনার ইনিশিয়ালাইজেশন
+        function initializeEventListeners() {
+            // জেলা নির্বাচন করলে উপজেলা অপশন আপডেট হবে
+            document.getElementById('district').addEventListener('change', function() {
+                updateUpazilas(this.value);
+            });
+            
+            // অর্ডার নিশ্চিত করুন বাটনে ক্লিক ইভেন্ট
+            document.getElementById('orderConfirmBtn').addEventListener('click', confirmOrder);
+            
+            // কুপন এপ্লাই বাটনে ক্লিক ইভেন্ট
+            document.getElementById('applyCoupon').addEventListener('click', applyCoupon);
+            
+            // এক্সপ্যান্ডেবল সেকশন ফাংশনালিটি
+            document.querySelectorAll('.expandable-header').forEach(header => {
+                header.addEventListener('click', function() {
+                    toggleExpandableSection(this.id);
+                });
+            });
+            
+            // রিয়েল-টাইম ফর্ম ভ্যালিডেশন
+            document.getElementById('phone').addEventListener('input', validatePhone);
+            
+            // মোডাল ফাংশনালিটি
+            document.getElementById('openLoginModal').addEventListener('click', () => openModal('loginModal'));
+            document.getElementById('openRegisterModal').addEventListener('click', () => openModal('registerModal'));
+            
+            document.querySelectorAll('.close-modal').forEach(closeBtn => {
+                closeBtn.addEventListener('click', closeAllModals);
+            });
+            
+            // লগইন ট্যাব ফাংশনালিটি
+            document.querySelectorAll('#loginModal .auth-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    switchAuthTab('loginModal', this.getAttribute('data-tab'));
+                });
+            });
+            
+            // OTP ফাংশনালিটি
+            document.getElementById('sendOtpBtn').addEventListener('click', sendOtp);
+            document.getElementById('resendOtp').addEventListener('click', resendOtp);
+            document.getElementById('verifyOtpBtn').addEventListener('click', verifyOtp);
+            
+            // OTP ইনপুট ফাংশনালিটি
+            document.querySelectorAll('.otp-input').forEach((input, index, inputs) => {
+                input.addEventListener('input', function() {
+                    if (this.value.length === 1 && index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                    // রিয়েল-টাইম OTP ভ্যালিডেশন
+                    validateOtpInputs();
+                });
+                
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' && this.value.length === 0 && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                });
+            });
+            
+            // পাসওয়ার্ড লগইন
+            document.getElementById('loginWithPasswordBtn').addEventListener('click', loginWithPassword);
+            
+            // পাসওয়ার্ড রেজিস্ট্রেশন
+            document.getElementById('registerWithPasswordBtn').addEventListener('click', registerWithPassword);
+            
+            // মোডাল সুইচিং
+            document.getElementById('goToRegisterFromLogin').addEventListener('click', function(e) {
+                e.preventDefault();
+                closeAllModals();
+                openModal('registerModal');
+            });
+            
+            document.getElementById('goToRegisterFromPassword').addEventListener('click', function(e) {
+                e.preventDefault();
+                closeAllModals();
+                openModal('registerModal');
+            });
+            
+            document.getElementById('goToLoginFromRegPassword').addEventListener('click', function(e) {
+                e.preventDefault();
+                closeAllModals();
+                openModal('loginModal');
+            });
+
+            // কুপন ইনপুট রিয়েল-টাইম ভ্যালিডেশন
+            document.getElementById('coupon').addEventListener('input', function() {
+                const couponMessage = document.getElementById('couponMessage');
+                couponMessage.style.display = 'none';
+            });
+        }
+        
+        // কোয়ান্টিটি বাড়ান
+        function increaseQuantity(productId) {
+            products[productId].quantity++;
+            document.getElementById(`quantity${productId}`).textContent = products[productId].quantity;
+            updateTotal();
+            calculateProductDiscount();
+        }
+        
+        // কোয়ান্টিটি কমান
+        function decreaseQuantity(productId) {
+            if (products[productId].quantity > 1) {
+                products[productId].quantity--;
+                document.getElementById(`quantity${productId}`).textContent = products[productId].quantity;
+                updateTotal();
+                calculateProductDiscount();
+            }
+        }
+        
+        // পণ্য ডিসকাউন্ট ক্যালকুলেশন
+        function calculateProductDiscount() {
+            productDiscount = 0;
+            let originalTotal = 0;
+            let discountedTotal = 0;
+            
+            for (const productId in products) {
+                originalTotal += products[productId].originalPrice * products[productId].quantity;
+                discountedTotal += products[productId].price * products[productId].quantity;
+            }
+            
+            productDiscount = originalTotal - discountedTotal;
+            document.getElementById('productDiscount').textContent = productDiscount.toLocaleString('bn-BD');
+            document.getElementById('productDiscountDetails').textContent = `(৳ ${productDiscount.toLocaleString('bn-BD')} ছাড়)`;
+        }
+        
+        // টোটাল আপডেট
+        function updateTotal() {
+            let subtotal = 0;
+            let originalSubtotal = 0;
+            
+            // সাবটোটাল ক্যালকুলেশন
+            for (const productId in products) {
+                subtotal += products[productId].price * products[productId].quantity;
+                originalSubtotal += products[productId].originalPrice * products[productId].quantity;
+            }
+            
+            const delivery = 50;
+            let total = subtotal + delivery - discountAmount;
+            
+            // UI আপডেট
+            document.getElementById('subtotal').textContent = originalSubtotal.toLocaleString('bn-BD');
+            document.getElementById('delivery').textContent = delivery.toLocaleString('bn-BD');
+            document.getElementById('couponDiscount').textContent = discountAmount.toLocaleString('bn-BD');
+            document.getElementById('finalTotal').textContent = total.toLocaleString('bn-BD');
+            document.getElementById('totalAmount').textContent = `৳ ${total.toLocaleString('bn-BD')}`;
+            
+            // কুপন ডিসকাউন্ট ডিটেলস
+            if (appliedCoupon) {
+                document.getElementById('couponDiscountDetails').textContent = `(${coupons[appliedCoupon]}% কুপন)`;
+            } else {
+                document.getElementById('couponDiscountDetails').textContent = '';
+            }
+        }
+        
+        // জেলা অনুযায়ী উপজেলা আপডেট
+        function updateUpazilas(district) {
+            const upazilaSelect = document.getElementById('upazila');
+            upazilaSelect.innerHTML = '<option value="">উপজেলা নির্বাচন করুন</option>';
+            
+            if (district) {
+                const upazilas = getUpazilasByDistrict(district);
+                upazilas.forEach(upazila => {
+                    const option = document.createElement('option');
+                    option.value = upazila.value;
+                    option.textContent = upazila.name;
+                    upazilaSelect.appendChild(option);
+                });
+            }
+        }
+        
+        // জেলা অনুযায়ী উপজেলা ডেটা
+        function getUpazilasByDistrict(district) {
+            const upazilas = {
+                'dhaka': [
+                    { value: 'savar', name: 'সাভার' },
+                    { value: 'dhamrai', name: 'ধামরাই' },
+                    { value: 'keraniganj', name: 'কেরানীগঞ্জ' }
+                ],
+                'chattogram': [
+                    { value: 'sitakunda', name: 'সীতাকুণ্ড' },
+                    { value: 'mirsharai', name: 'মীরসরাই' },
+                    { value: 'patiya', name: 'পটিয়া' }
+                ],
+                'khulna': [
+                    { value: 'dumuria', name: 'ডুমুরিয়া' },
+                    { value: 'batiaghata', name: 'বটিয়াঘাটা' },
+                    { value: 'dacope', name: 'দাকোপ' }
+                ]
+            };
+            
+            return upazilas[district] || [];
+        }
+        
+        // কুপন প্রয়োগ
+        function applyCoupon() {
+            const couponCode = document.getElementById('coupon').value.trim();
+            const couponMessage = document.getElementById('couponMessage');
+            
+            if (!couponCode) {
+                couponMessage.textContent = 'দয়া করে একটি কুপন কোড লিখুন।';
+                couponMessage.className = 'error-message';
+                couponMessage.style.display = 'block';
+                return;
+            }
+            
+            if (coupons[couponCode]) {
+                appliedCoupon = couponCode;
+                const discountPercent = coupons[couponCode];
+                const subtotal = calculateSubtotal();
+                discountAmount = Math.round((subtotal * discountPercent) / 100);
+                
+                couponMessage.textContent = `সফল! ${discountPercent}% ডিসকাউন্ট প্রয়োগ করা হয়েছে।`;
+                couponMessage.className = 'success-message';
+                couponMessage.style.display = 'block';
+                
+                updateTotal();
+            } else {
+                couponMessage.textContent = 'দুঃখিত, এই কুপনটি বৈধ নয়।';
+                couponMessage.className = 'error-message';
+                couponMessage.style.display = 'block';
+            }
+        }
+        
+        // সাবটোটাল ক্যালকুলেশন
+        function calculateSubtotal() {
+            let subtotal = 0;
+            for (const productId in products) {
+                subtotal += products[productId].price * products[productId].quantity;
+            }
+            return subtotal;
+        }
+        
+        // এক্সপ্যান্ডেবল সেকশন টগল
+        function toggleExpandableSection(headerId) {
+            const contentId = headerId.replace('header', 'content');
+            const content = document.getElementById(contentId);
+            const header = document.getElementById(headerId);
+            const arrow = header.querySelector('.icon-arrow');
+            
+            content.classList.toggle('active');
+            arrow.classList.toggle('rotate');
+        }
+        
+        // ফোন নাম্বার ভ্যালিডেশন
+        function validatePhone() {
+            const phoneInput = document.getElementById('phone');
+            const phoneValue = phoneInput.value.replace(/\D/g, '');
+            
+            if (phoneValue.length > 11) {
+                phoneInput.value = phoneValue.slice(0, 11);
+            }
+            
+            // রিয়েল-টাইম ভ্যালিডেশন স্ট্যাটাস দেখানো
+            if (phoneValue.length === 11) {
+                phoneInput.style.borderColor = '#00C853';
+            } else {
+                phoneInput.style.borderColor = '#E0E0E0';
+            }
+        }
+        
+        // অর্ডার নিশ্চিতকরণ
+        function confirmOrder() {
+            // ফরম ভ্যালিডেশন
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const district = document.getElementById('district').value;
+            const upazila = document.getElementById('upazila').value;
+            
+            if (!name || !phone || !address || !district || !upazila) {
+                alert('দয়া করে সমস্ত প্রয়োজনীয় তথ্য প্রদান করুন।');
+                return;
+            }
+            
+            if (phone.length !== 11 || isNaN(phone)) {
+                alert('দয়া করে একটি বৈধ ১১ ডিজিটের মোবাইল নাম্বার প্রদান করুন।');
+                return;
+            }
+            
+            // কার্ট খালি থাকলে অর্ডার নিশ্চিত করা যাবে না
+            if (Object.keys(products).length === 0) {
+                alert('দয়া করে কিছু প্রোডাক্ট যোগ করুন অর্ডার দিতে।');
+                return;
+            }
+            
+            // অর্ডার নিশ্চিতকরণ মেসেজ
+            const orderDetails = `
+                আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে!
+                
+                অর্ডার বিবরণ:
+                - মোট মূল্য: ৳ ${document.getElementById('finalTotal').textContent}
+                - ডেলিভারি ঠিকানা: ${address}, ${upazila}, ${district}
+                - কন্টাক্ট: ${phone}
+                
+                শীঘ্রই আমরা আপনার সাথে যোগাযোগ করব। ধন্যবাদ!
+            `;
+            
+            alert(orderDetails);
+        }
+        
+        // মোডাল ফাংশনালিটি
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+        
+        function closeAllModals() {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.style.display = 'none';
+            });
+            resetAuthForms();
+        }
+        
+        function switchAuthTab(modalId, tab) {
+            // ট্যাব সক্রিয় করুন
+            document.querySelectorAll(`#${modalId} .auth-tab`).forEach(t => {
+                t.classList.remove('active');
+            });
+            document.querySelector(`#${modalId} .auth-tab[data-tab="${tab}"]`).classList.add('active');
+            
+            // ফর্ম সক্রিয় করুন
+            document.querySelectorAll(`#${modalId} .auth-form`).forEach(form => {
+                form.classList.remove('active');
+            });
+            document.querySelector(`#${modalId} #${tab}${modalId === 'loginModal' ? 'Login' : 'Register'}Form`).classList.add('active');
+            
+            resetAuthForms();
+        }
+        
+        function resetAuthForms() {
+            // OTP ফর্ম রিসেট করুন
+            document.getElementById('loginPhone').value = '';
+            document.getElementById('otpInputGroup').style.display = 'none';
+            document.getElementById('verifyOtpBtn').style.display = 'none';
+            document.getElementById('sendOtpBtn').style.display = 'block';
+            document.getElementById('sendOtpBtn').disabled = false;
+            
+            // OTP ইনপুট ফিল্ড ক্লিয়ার করুন
+            document.querySelectorAll('.otp-input').forEach(input => {
+                input.value = '';
+            });
+            
+            // পাসওয়ার্ড ফর্ম রিসেট করুন
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            
+            // রেজিস্ট্রেশন ফর্ম রিসেট করুন
+            document.getElementById('regNamePassword').value = '';
+            document.getElementById('regPhonePassword').value = '';
+            document.getElementById('regEmailPassword').value = '';
+            document.getElementById('regPassword').value = '';
+            document.getElementById('regConfirmPassword').value = '';
+            
+            // টাইমার বন্ধ করুন
+            clearInterval(otpTimer);
+            document.getElementById('otpTimer').textContent = '০০:০০';
+            document.getElementById('resendOtp').style.pointerEvents = 'auto';
+        }
+        
+        // OTP টাইমার ফাংশন
+        function startOtpTimer() {
+            const timerElement = document.getElementById('otpTimer');
+            const resendLink = document.getElementById('resendOtp');
+            let timeLeft = 120; // 2 minutes
+            
+            // টাইমার বন্ধ করুন যদি আগে থেকে চলমান থাকে
+            clearInterval(otpTimer);
+            otpTimeLeft = timeLeft;
+            
+            resendLink.style.pointerEvents = 'none';
+            
+            otpTimer = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                
+                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                timeLeft--;
+                otpTimeLeft = timeLeft;
+                
+                if (timeLeft < 0) {
+                    clearInterval(otpTimer);
+                    timerElement.textContent = '০০:০০';
+                    resendLink.style.pointerEvents = 'auto';
+                }
+            }, 1000);
+        }
+        
+        function sendOtp() {
+            const phone = document.getElementById('loginPhone').value.trim();
+            
+            if (!phone || phone.length !== 11 || isNaN(phone)) {
+                alert('দয়া করে একটি বৈধ ১১ ডিজিটের মোবাইল নাম্বার প্রদান করুন।');
+                return;
+            }
+            
+            // সিমুলেট OTP পাঠানো
+            alert(`OTP কোডটি ${phone} নম্বরে পাঠানো হয়েছে।`);
+            
+            // OTP ইনপুট দেখান
+            document.getElementById('otpInputGroup').style.display = 'block';
+            document.getElementById('verifyOtpBtn').style.display = 'block';
+            document.getElementById('sendOtpBtn').style.display = 'none';
+            document.getElementById('sendOtpBtn').disabled = true;
+            
+            // OTP টাইমার শুরু করুন
+            startOtpTimer();
+            
+            // প্রথম OTP ইনপুটে ফোকাস দিন
+            document.querySelector('#otpLoginForm .otp-input').focus();
+        }
+        
+        function resendOtp() {
+            const phone = document.getElementById('loginPhone').value.trim();
+            
+            if (!phone || phone.length !== 11 || isNaN(phone)) {
+                alert('দয়া করে একটি বৈধ ১১ ডিজিটের মোবাইল নাম্বার প্রদান করুন।');
+                return;
+            }
+            
+            // সিমুলেট OTP পুনরায় পাঠানো
+            alert(`OTP কোডটি আবার ${phone} নম্বরে পাঠানো হয়েছে।`);
+            
+            // OTP টাইমার শুরু করুন
+            startOtpTimer();
+            
+            // OTP ইনপুট ফিল্ড ক্লিয়ার করুন
+            document.querySelectorAll('#otpLoginForm .otp-input').forEach(input => {
+                input.value = '';
+            });
+            
+            // প্রথম OTP ইনপুটে ফোকাস দিন
+            document.querySelector('#otpLoginForm .otp-input').focus();
+        }
+        
+        function validateOtpInputs() {
+            let allFilled = true;
+            document.querySelectorAll('.otp-input').forEach(input => {
+                if (!input.value) {
+                    allFilled = false;
+                }
+            });
+            
+            // যদি সব OTP ইনপুট ভরা থাকে, তাহলে ভেরিফাই বাটন সক্রিয় করুন
+            if (allFilled) {
+                document.getElementById('verifyOtpBtn').disabled = false;
+            } else {
+                document.getElementById('verifyOtpBtn').disabled = true;
+            }
+        }
+        
+        function verifyOtp() {
+            let otpCode = '';
+            document.querySelectorAll('#otpLoginForm .otp-input').forEach(input => {
+                otpCode += input.value;
+            });
+            
+            if (otpCode.length !== 6) {
+                alert('দয়া করে সম্পূর্ণ OTP কোডটি লিখুন।');
+                return;
+            }
+            
+            // সিমুলেট OTP যাচাই
+            if (otpCode === '123456') {
+                alert('লগইন সফল! আপনার অ্যাকাউন্টে প্রবেশ করা হয়েছে।');
+                closeAllModals();
+                
+                // লগইন স্ট্যাটাস আপডেট করুন
+                updateLoginStatus();
+            } else {
+                alert('OTP কোডটি ভুল। দয়া করে আবার চেষ্টা করুন।');
+            }
+        }
+        
+        function loginWithPassword() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            
+            if (!email) {
+                alert('দয়া করে আপনার ইমেইল বা মোবাইল নম্বর লিখুন।');
+                return;
+            }
+            
+            if (!password) {
+                alert('দয়া করে আপনার পাসওয়ার্ড লিখুন।');
+                return;
+            }
+            
+            // সিমুলেট পাসওয়ার্ড লগইন
+            if (password === '123456') {
+                alert('লগইন সফল! আপনার অ্যাকাউন্টে প্রবেশ করা হয়েছে।');
+                closeAllModals();
+                
+                // লগইন স্ট্যাটাস আপডেট করুন
+                updateLoginStatus();
+            } else {
+                alert('ইমেইল বা পাসওয়ার্ড ভুল। দয়া করে আবার চেষ্টা করুন।');
+            }
+        }
+        
+        function registerWithPassword() {
+            const name = document.getElementById('regNamePassword').value.trim();
+            const phone = document.getElementById('regPhonePassword').value.trim();
+            const email = document.getElementById('regEmailPassword').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+            const confirmPassword = document.getElementById('regConfirmPassword').value.trim();
+            
+            if (!name) {
+                alert('দয়া করে আপনার নাম লিখুন।');
+                return;
+            }
+            
+            if (!phone || phone.length !== 11 || isNaN(phone)) {
+                alert('দয়া করে একটি বৈধ ১১ ডিজিটের মোবাইল নাম্বার প্রদান করুন।');
+                return;
+            }
+            
+            if (!email) {
+                alert('দয়া করে আপনার ইমেইল ঠিকানা লিখুন।');
+                return;
+            }
+            
+            if (!password) {
+                alert('দয়া করে পাসওয়ার্ড লিখুন।');
+                return;
+            }
+            
+            if (password.length < 6) {
+                alert('পাসওয়ার্ড ন্যূনতম ৬ অক্ষরের হতে হবে।');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('পাসওয়ার্ড মিলছে না। দয়া করে আবার চেষ্টা করুন।');
+                return;
+            }
+            
+            // সিমুলেট রেজিস্ট্রেশন
+            alert('নিবন্ধন সফল! আপনার অ্যাকাউন্ট তৈরি করা হয়েছে।');
+            closeAllModals();
+            
+            // লগইন স্ট্যাটাস আপডেট করুন
+            updateLoginStatus();
+        }
+        
+        function updateLoginStatus() {
+            document.querySelector('.auth-prompt').innerHTML = `
+                <span><i class="fas fa-check-circle" style="color: #00C853;"></i> আপনি লগইন করেছেন</span>
+                <button class="auth-btn" id="logoutBtn">লগআউট</button>
+            `;
+            
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                document.querySelector('.auth-prompt').innerHTML = `
+                    <span>ইতিমধ্যে অ্যাকাউন্ট আছে?</span>
+                    <button class="auth-btn" id="openLoginModal">লগইন</button>
+                    <span>নতুন ইউজার?</span>
+                    <button class="auth-btn secondary" id="openRegisterModal">রেজিস্ট্রেশন</button>
+                `;
+                
+                // ইভেন্ট লিসেনার পুনরায় সংযুক্ত করুন
+                document.getElementById('openLoginModal').addEventListener('click', () => openModal('loginModal'));
+                document.getElementById('openRegisterModal').addEventListener('click', () => openModal('registerModal'));
+            });
+        }
+    </script>
 </body>
 </html>
